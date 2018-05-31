@@ -24,29 +24,32 @@ export class UserService {
   constructor( private http: HttpClient ) { }
 
   userLogin(data: LoginData ): number {
+    this.testRemote();
+    return 0;
     this.http.post(this.URL['user']+this.URL['login'], data)
     .subscribe(
-      async res=>{
-        //console.log(res);
+      res=>{
+        console.log(res);
         this.response= res.code;
       },
-      async error => {
-        //console.log(error.error.code);
+      error => {
+        console.log(error.error.code);
         this.response= error.error.code;
       }
     );
     return this.response;
   }
   userRegister(data: RegData): number{
-
+    this.testRemote();
+    return 0;
     this.http.post(this.URL['user']+this.URL['register'], data)
     .subscribe(
-      async res=>{
-        //console.log(res);
+      res=>{
+        console.log(res);
         this.response= res.code;
       },
-      async error => {
-        //console.log(error.error.code);
+      error => {
+        console.log(error.error.code);
         this.response= error.error.code;
       }
     );

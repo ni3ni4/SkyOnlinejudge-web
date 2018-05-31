@@ -29,7 +29,8 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit(): void{
-    var res=this.userService.userLogin(this.data);   
+    var res=0; 
+    res=this.userService.userLogin(this.data);   
     if(res==200)
     {
       console.log("success");
