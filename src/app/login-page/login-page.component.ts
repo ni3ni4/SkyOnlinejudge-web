@@ -17,6 +17,7 @@ export class LoginPageComponent implements OnInit {
   login:boolean =false;
   error=false;
   error_message:string;
+  response;
 
   constructor( 
     private userService: UserService,
@@ -24,24 +25,62 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.submit();
+    this.isLogin();
     this.error=false;
   }
 
-  submit(): void{
-    var res=0; 
-    res=this.userService.userLogin(this.data);   
-    if(res==200)
-    {
-      console.log("success");
-      this.router.navigate(['/']);
-    }
-    else this.err(res);
+  submit(): void{ 
+    this.userService.userLogin(this.data)
+    .subscribe(
+      res=>{
+        console.log(res);
+        if(res['code']==200)
+        {
+          console.log("success");
+          this.router.navigate(['/']);
+        }
+      },
+      error => {
+        console.log(error.error);
+        this.err(error.error.code);
+      }
+    );
   }
 
   err(code:number): void{
     this.error=true;
     if(code==403)this.error_message="Access denied!";
     else this.error_message="Internal error! Please contact admin!";
+  }
+
+  isLogin():void{
+    this.userService.getUid()
+    .subscribe(
+      res=>{
+        if(res['uid']!=0)this.login=true;
+        else this.login=false;
+      },
+      error => {
+        console.log(error.error.code);
+        this.err(error.error.code);
+      },
+    )
+  }
+
+  logout(){
+    this.userService.logout()
+    .subscribe(
+      res=>{
+        if(res['code']==200)
+        {
+          console.log("success");
+          this.router.navigate(['/']);
+        }
+      },
+      error => {
+        console.log(error.error);
+        this.err(error.error.code);
+      }
+    );
   }
 }

@@ -27,7 +27,7 @@ error=false;
   ) {}
 
   ngOnInit() {
-    this.submit();
+    //this.submit();
     this.error=false;
   }
 
@@ -37,10 +37,21 @@ error=false;
       this.router.navigate(['/register']);
       return;
     }
-    var res=this.userService.userRegister(this.data);
-    console.log(res);
-    if(res==200)this.router.navigate(['/']);
-    else this.err(res);
+    this.userService.userRegister(this.data)
+    .subscribe(
+      res=>{
+        console.log(res);
+        if(res['code']==200)
+        {
+          console.log("success");
+          this.router.navigate(['/']);
+        }
+      },
+      error => {
+        console.log(error.error);
+        this.err(error.error.code);
+      }
+    );
   }
 
   err(code:number): void{

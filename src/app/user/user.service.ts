@@ -23,27 +23,26 @@ export class UserService {
 
   constructor( private http: HttpClient ) { }
 
-  userLogin(data: LoginData ): number {
-    this.testRemote();
-    return 0;
-    this.http.post(this.URL['user']+this.URL['login'], data)
+  userLogin(data: LoginData ) {
+    return this.http.post(this.URL.user+this.URL.login, data);
+    /*
     .subscribe(
       res=>{
         console.log(res);
         this.response= res.code;
+        return this.response;
       },
       error => {
         console.log(error.error.code);
         this.response= error.error.code;
+        return this.response;
       }
     );
-    return this.response;
+    */
   }
-  userRegister(data: RegData): number{
-    this.testRemote();
-    return 0;
-    this.http.post(this.URL['user']+this.URL['register'], data)
-    .subscribe(
+  userRegister(data: RegData){
+    return this.http.post(this.URL.user+this.URL.register, data);
+    /*.subscribe(
       res=>{
         console.log(res);
         this.response= res.code;
@@ -53,10 +52,18 @@ export class UserService {
         this.response= error.error.code;
       }
     );
-    return this.response;
+    */
   }
   testRemote():void{
     console.log("remote test");
     this.http.get('https://pc2.tfcis.org/dev/api.php/ping?text=a').subscribe(data=>console.log(data));
+  }
+
+  getUid(){
+    return this.http.get('https://pc2.tfcis.org/dev/api.php/ping?text=a');
+  }
+
+  logout(){
+    return this.http.post(this.URL.user+this.URL.logout,"1");
   }
 }
